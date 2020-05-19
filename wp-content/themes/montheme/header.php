@@ -10,8 +10,7 @@
 		<p><?php bloginfo('description');?></p>
 	</header>
 
-<?php 
+<?php
+//display main_menu
 wp_nav_menu(array(
-	'theme_location' => 'main_menu'
-));
-?>
+	'theme_location' => 'main_menu'));

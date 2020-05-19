@@ -1,0 +1,13 @@
+/*
+Theme Name: Twenty Twenty Child
+Theme URI: http://monsite.com
+Description: ceci est mon thème enfant perso
+Author: me
+Author URI: https://monsiteperso.org
+Version: 0.0
+Template: twentytwenty
+*/
+
+body{
+	color: blue !important;
+}

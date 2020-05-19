@@ -46,10 +46,101 @@ function mytheme_sidebars() {
 	);
 }
 
+/* The customizer API */
 
+add_action('customize_register', 'mytheme_customizer');
 
+function mytheme_customizer($wp_customize){
+    $wp_customize->add_section('cd_colors', array(
+        'title' => __('Couleurs', 'mythemelg'),
+        'priority' => 30
+    ));
+    $wp_customize->add_setting('bg_color', array(
+        'default' => '#FFFFFF'
+    ));
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize,
+        'bg_color', array(
+            'label' => __('Couleur de fond', 'mythemelg'),
+            'section' => 'cd_colors'
+        )));
 
+    $wp_customize->add_setting('txt_color', array(
+        'default' => '#000000'
+    ));
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize,
+        'txt_color', array(
+            'label' => __('Couleur des textes', 'mythemelg'),
+            'section' => 'cd_colors'
+        )));
 
+    $wp_customize->add_section('media', array(
+        'title' => __('Bannière', 'mythemelg'),
+        'priority' => 35
+    ));
+    $wp_customize->add_setting('ban_img', array(
+        'default' => ''
+    ));
+    $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize,
+        'bg_color', array(
+            'label' => __('Choisir votre bannière'),
+            'section' => 'media'
+        )));
+}
 
+/* Apply settings */
+add_action('wp_head', 'mytheme_customizercss');
 
+function mytheme_customizercss(){
+    echo '<style>body{background:'.get_theme_mod('bg_color').';color:'.
+        get_theme_mod('txt_color').';}</style>';
+}
 
+/* Custom Post Types */
+
+add_action('init', 'mytheme_cpt');
+
+function mytheme_cpt(){
+    $labels = array(
+        'name' => __('Evenements', 'mythemelg')
+    );
+
+    $args = array(
+        'labels' => $labels,
+        'public' => true,
+        'has_archive' => true,
+        'show_in_rest' => true,
+        'supports' => array(
+            'title',
+            'editor',
+            'thumbnail'
+        ),
+        'menu_position' => 5,
+        'menu_icon' => 'dashicons-awards',
+        'hierarchical' => true
+    );
+
+    register_post_type('events', $args);
+}
+
+/* Taxonomie */
+
+add_action('init', 'mytheme_customtaxo');
+
+function mytheme_customtaxo(){
+    $labels_type = array(
+        'name' => __('Types', 'mythemelg'),
+        'singular_name' => __('Type', 'mythemelg'),
+        'all_items' => __('Tous les types', 'mythemelg')
+    );
+
+    $args_type = array(
+        'hierarchical' => true,
+        'labels' => $labels_type,
+        'show_admin_column' => true,
+        'show_in_rest' => true,
+        'show_ui' => true,
+        'show_in_menu' => true
+    );
+
+    register_taxonomy('types', 'events', $args_type);
+}

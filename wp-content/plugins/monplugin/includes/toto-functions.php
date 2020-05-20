@@ -25,3 +25,15 @@ add_shortcode('toto', 'myplugin_TotoShortcode');
 function myplugin_TotoShortcode(){
     return "<b>Mon Shortcode Toto</b>";
 }
+
+//[titi att="value"]
+add_shortcode('titi', 'myplugin_TitiShortcode');
+
+function myplugin_TitiShortcode(){
+    $a = shortcode_atts(array(
+        'x' => 'un truc',
+        'y' => 'un autre'
+    ), $atts);
+
+    return "<p>x = {$a['x']} $ y = {$a['y']}</p>";
+}

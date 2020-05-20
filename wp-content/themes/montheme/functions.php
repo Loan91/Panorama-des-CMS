@@ -150,13 +150,13 @@ function mytheme_customtaxo(){
 add_action('add_meta_boxes', 'mytheme_add_custommetabox');
 
 function mytheme_add_custommetabox(){
-    $genres = ['genres'];
-    foreach ($genres as $genre){
+    $events = ['events'];
+    foreach ($events as $event){
         add_meta_box(
             'begin_metabox', // Unique ID
             'Date de début',
             'mytheme_custommetabox_html',
-            $genre
+            $event
         );
     }
 }
@@ -172,6 +172,8 @@ function mytheme_custommetabox_html($post){
         <option value="something" <?php selected($value, 'something'); ?>>Something</option>
         <option value="else" <?php selected($value, 'else'); ?>>Else</option>
     </select>
+    <label for="date_field">Date for this field</label>
+    <input type="date" name="date_field" id="date_field">
     <?php
 }
 
@@ -185,6 +187,13 @@ function mytheme_save_postdata($post_id){
             $post_id,
             '_wporg_meta_key',
             $_POST['wporg_field']
+        );
+    }
+    if (array_key_exists('date_field', $_POST)) {
+        update_post_meta(
+            $post_id,
+            '_date_meta_key',
+            $_POST['date_field']
         );
     }
 }

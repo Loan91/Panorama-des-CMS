@@ -17,3 +17,11 @@ function myplugin_Add_AdminLink(){
         'monplugin/includes/toto-acp-page.php'
     );
 }
+
+/* Shortcodes */
+//[toto]
+add_shortcode('toto', 'myplugin_TotoShortcode');
+
+function myplugin_TotoShortcode(){
+    return "<b>Mon Shortcode Toto</b>";
+}

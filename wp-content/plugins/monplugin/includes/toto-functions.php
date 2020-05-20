@@ -35,5 +35,5 @@ function myplugin_TitiShortcode(){
         'y' => 'un autre'
     ), $atts);
 
-    return "<p>x = {$a['x']} $ y = {$a['y']}</p>";
+    return "<p>x = {$a['x']} et y = {$a['y']}</p>";
 }

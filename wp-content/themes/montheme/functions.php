@@ -128,9 +128,9 @@ add_action('init', 'mytheme_customtaxo');
 
 function mytheme_customtaxo(){
     $labels_type = array(
-        'name' => __('Types', 'mythemelg'),
-        'singular_name' => __('Type', 'mythemelg'),
-        'all_items' => __('Tous les types', 'mythemelg')
+        'name' => __('Genres', 'mythemelg'),
+        'singular_name' => __('Genre', 'mythemelg'),
+        'all_items' => __('Tous les genres', 'mythemelg')
     );
 
     $args_type = array(
@@ -142,5 +142,51 @@ function mytheme_customtaxo(){
         'show_in_menu' => true
     );
 
-    register_taxonomy('types', 'events', $args_type);
+    register_taxonomy('genres', 'events', $args_type);
 }
+
+/* Custom field */
+
+add_action('add_meta_boxes', 'mytheme_add_custommetabox');
+
+function mytheme_add_custommetabox(){
+    $genres = ['genres'];
+    foreach ($genres as $genre){
+        add_meta_box(
+            'begin_metabox', // Unique ID
+            'Date de début',
+            'mytheme_custommetabox_html',
+            $genre
+        );
+    }
+}
+
+//En attente de correction
+function mytheme_custommetabox_html($post){
+    // Structure HTML champs personnalisé
+    $value = get_post_meta($post->ID, '_wporg_meta_key', true);
+    ?>
+    <label for="wporg_field">Description for this field</label>
+    <select name="wporg_field" id="wporg_field" class="postbox">
+        <option value="">Select something...</option>
+        <option value="something" <?php selected($value, 'something'); ?>>Something</option>
+        <option value="else" <?php selected($value, 'else'); ?>>Else</option>
+    </select>
+    <?php
+}
+
+add_action('save_post', 'mytheme_save_postdata');
+
+//En attente de correction
+function mytheme_save_postdata($post_id){
+    // update_post_meta($post_id,...)
+    if (array_key_exists('wporg_field', $_POST)) {
+        update_post_meta(
+            $post_id,
+            '_wporg_meta_key',
+            $_POST['wporg_field']
+        );
+    }
+}
+
+/* TP Custom field */
